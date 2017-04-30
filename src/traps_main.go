@@ -92,13 +92,10 @@ func ReceiverTest() {
 }
 
 /* nil相关，尤其是在返回定制化的error时。
-接口包含三个字段: _type、pkgname、[]imethod接口方法数组
-结构体也包含三个字段: _type、pkgname、[]structfield
-
 1. 结构体指针和接口可以赋予nil值，当把结构体指针转换为接口时，
-接口的_type字段不会为nil，因此接口不会为nil, 只有当接口的类型
+接口的itab字段不会为nil，因此接口不会为nil, 只有当接口的类型
 信息也为nil时，此接口才==nil
-2. 给接口赋值nil时其类型信息_type也为nil，所以整体==nil
+2. 给接口赋值nil时其类型信息itab也为nil，所以整体==nil
 3. 将其他类型强制转换为接口时，由于在其定义的时候类型信息即存在
 了，所以无论其值是不是nil，其类型信息始终导致转换后的接口永远
 不为nil，除非其本身就没类型即nil
