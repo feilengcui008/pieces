@@ -4,20 +4,20 @@
 package main
 
 import (
-	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/printer"
 	"go/token"
-	"os"
 )
+
+import ("fmt"; "os")
 
 // func ParseFile commment
 //
 func ParseFile(filename string) (*ast.File, *token.FileSet, error) {
-	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, filename, nil, 0)
-	return f, fset, err
+	fset := token.NewFileSet();
+	f, err := parser.ParseFile(fset, filename, nil, 0);
+	return f, fset, err;
 }
 
 // func main comment
