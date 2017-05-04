@@ -8,10 +8,23 @@ import (
 	"plugin"
 )
 
-func main() {
+func testUseGoPlugin() {
 	p, err := plugin.Open("plugin/goplugin.so")
 	fmt.Printf("%#v with err %v\n", p, err)
 	fn, err := p.Lookup("ExportedForPlugin")
 	fmt.Printf("%T %v\n", fn, fn)
 	fn.(func())()
+}
+
+// will fail to load c shared library
+func testUseCPlugin() {
+	p, err := plugin.Open("plugin/cplugin.so")
+	fmt.Printf("%#v with err %v\n", p, err)
+	fn, err := p.Lookup("myprintf")
+	fmt.Printf("%T %v\n", fn, fn)
+}
+
+func main() {
+	testUseGoPlugin()
+	//testUseCPlugin()
 }
