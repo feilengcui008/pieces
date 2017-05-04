@@ -20,11 +20,12 @@ func testUseGoPlugin() {
 func testUseCPlugin() {
 	p, err := plugin.Open("plugin/cplugin.so")
 	fmt.Printf("%#v with err %v\n", p, err)
-	fn, err := p.Lookup("myprintf")
+	fn, err := p.Lookup("Myprintf")
 	fmt.Printf("%T %v\n", fn, fn)
 }
 
 func main() {
-	testUseGoPlugin()
-	//testUseCPlugin()
+	//testUseGoPlugin()
+	fmt.Println("=======")
+	testUseCPlugin() // fail don't know why
 }
