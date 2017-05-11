@@ -12,8 +12,12 @@ func testTimer() {
 		fmt.Printf("time is up: %v\n", tm)
 		break
 	}
+	// notice: timer callback is called in the timerproc
+	// goroutine, try not to make it blocked
 	t1 := time.AfterFunc(time.Second, func() {
-		fmt.Println("call from timer goroutine")
+		go func() {
+			fmt.Println("call from timer goroutine")
+		}()
 	})
 	// can not be select anymore
 	// but can stop

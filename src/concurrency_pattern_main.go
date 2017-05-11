@@ -49,8 +49,10 @@ func BatchSynchronizationPattern() {
 	fn := func(wg *sync.WaitGroup, i int) {
 		go func() {
 			time.AfterFunc(time.Second*2, func() {
-				log.Printf("gopher %d done\n", i)
-				wg.Done()
+				go func() {
+					log.Printf("gopher %d done\n", i)
+					wg.Done()
+				}()
 			})
 		}()
 	}
