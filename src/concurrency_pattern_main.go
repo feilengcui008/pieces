@@ -7,6 +7,8 @@
 //PipelineProcessingPattern()
 //PrimeSievePipeline()
 //PingPongPattern()
+//FanInPattern()
+//FanOutPattern()
 
 package main
 
@@ -283,6 +285,83 @@ func PingPongPattern() {
 	cancel()
 }
 
+// FanInPattern
+func FanInPattern() {
+	gen := func(ctx context.Context, id int) <-chan int {
+		c := make(chan int)
+		i := 0
+		go func() {
+			for {
+				select {
+				case c <- i:
+					i += 1
+					time.Sleep(time.Millisecond * 200)
+				case <-ctx.Done():
+					return
+				}
+			}
+		}()
+		return c
+	}
+	collect := func(ctx context.Context, c <-chan int, ch <-chan int) {
+		go func() {
+			for {
+				select {
+				case v := <-c:
+					log.Printf("got from c: %d\n", v)
+				case v := <-ch:
+					log.Printf("got from ch: %d\n", v)
+				case <-ctx.Done():
+					return
+				}
+			}
+		}()
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	c0 := gen(ctx, 0)
+	c1 := gen(ctx, 1)
+	collect(ctx, c0, c1)
+	<-time.After(time.Second * 2)
+	cancel()
+}
+
+// FanOutPattern
+func FanOutPattern() {
+	eater := func(ctx context.Context, c <-chan int, id int) {
+		go func() {
+			for {
+				select {
+				case v := <-c:
+					log.Printf("eater %d got: %d", id, v)
+				case <-ctx.Done():
+					return
+				}
+			}
+		}()
+	}
+	gen := func(ctx context.Context) <-chan int {
+		c := make(chan int)
+		go func() {
+			i := 0
+			for {
+				select {
+				case c <- i:
+					i += 1
+					time.Sleep(time.Microsecond * 200000)
+				case <-ctx.Done():
+					return
+				}
+			}
+		}()
+		return c
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	c := gen(ctx)
+	eater(ctx, c, 0)
+	eater(ctx, c, 1)
+	<-time.After(time.Second * 2)
+	cancel()
+}
 func main() {
 	//SimpleSynchronizationPattern1()
 	//SimpleSynchronizationPattern2()
@@ -290,6 +369,8 @@ func main() {
 	//BatchNotificationPattern()
 	//ProducerWorkerConsumerPattern()
 	//PipelineProcessingPattern()
-	PrimeSievePipeline()
+	//PrimeSievePipeline()
 	//PingPongPattern()
+	//FanInPattern()
+	FanOutPattern()
 }
