@@ -15,6 +15,7 @@ package main
 import (
 	"context"
 	"log"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -362,6 +363,27 @@ func FanOutPattern() {
 	<-time.After(time.Second * 2)
 	cancel()
 }
+
+// BackupRequestPattern
+func BackupRequestPattern() {
+	fakeReq := func(ctx context.Context, url string, c chan<- string) {
+		go func() {
+			time.Sleep(time.Millisecond * time.Duration(100+rand.Int()%51))
+			c <- url
+		}()
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	c := make(chan string)
+	url := "fakeUrl"
+	begin := time.Now()
+	for i := 0; i < 10; i++ {
+		fakeReq(ctx, url, c)
+	}
+	res := <-c
+	log.Printf("got result: %s, time spent: %s", res, time.Since(begin).String())
+	cancel()
+}
+
 func main() {
 	//SimpleSynchronizationPattern1()
 	//SimpleSynchronizationPattern2()
@@ -372,5 +394,6 @@ func main() {
 	//PrimeSievePipeline()
 	//PingPongPattern()
 	//FanInPattern()
-	FanOutPattern()
+	//FanOutPattern()
+	BackupRequestPattern()
 }
