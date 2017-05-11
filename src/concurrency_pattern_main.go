@@ -368,9 +368,14 @@ func FanOutPattern() {
 // BackupRequestPattern
 func BackupRequestPattern() {
 	fakeReq := func(ctx context.Context, url string, c chan<- string) {
+		tm := time.After(time.Millisecond * time.Duration(100+rand.Int()%51))
 		go func() {
-			time.Sleep(time.Millisecond * time.Duration(100+rand.Int()%51))
-			c <- url
+			select {
+			case <-tm:
+				c <- url
+			case <-ctx.Done():
+				return
+			}
 		}()
 	}
 	ctx, cancel := context.WithCancel(context.Background())
