@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	pb "grpcapp/proto"
+	"io"
+
 	"github.com/spf13/cobra"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	pb "grpcapp/proto"
-	"io"
 )
 
 var (
@@ -27,6 +28,7 @@ func init() {
 	clientCmd.Flags().StringVarP(&address, "address", "s", ":8080", "server address to connect")
 }
 
+// RunClient run client cmd
 func RunClient() {
 	var (
 		cc  *grpc.ClientConn
@@ -58,7 +60,7 @@ func RunClient() {
 	// it seems that CloseSend only useful for
 	// bidirectional case
 	var cs pb.ItemService_GetItemStreamClient
-	var count int32 = 0
+	var count int32
 	if cs, err = c.GetItemStream(ctx, req); err != nil {
 		fmt.Println(err)
 		return
@@ -124,7 +126,7 @@ func RunClient() {
 	}()
 
 	go func() {
-		var n int = 0
+		var n int
 		for {
 			_, err := bcs.Recv()
 			if err == io.EOF {
@@ -139,6 +141,5 @@ func RunClient() {
 		ch <- n
 	}()
 	n := <-ch
-	fmt.Println("bidirectional stream got response: %v\n", n)
-
+	fmt.Printf("bidirectional stream got response: %v\n", n)
 }

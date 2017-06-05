@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
 	pb "grpcapp/proto"
 	service "grpcapp/service"
 	"net"
+
+	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -18,7 +19,7 @@ var serverCmd = &cobra.Command{
 	Short: "server cmd for grpcapp",
 	Long:  "server cmd for grpcapp",
 	Run: func(cmd *cobra.Command, args []string) {
-		RunServe()
+		RunServer()
 	},
 }
 
@@ -27,7 +28,8 @@ func init() {
 	serverCmd.Flags().StringVarP(&port, "port", "p", "8080", "port to listen")
 }
 
-func RunServe() {
+// RunServer run the server cmd
+func RunServer() {
 	var (
 		l   net.Listener
 		err error

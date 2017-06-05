@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
+// RootCmd is the root cmd of an app
 var RootCmd = &cobra.Command{
 	Use:   "grpcapp",
 	Short: "a demo project for grpc-go",
@@ -13,6 +15,7 @@ var RootCmd = &cobra.Command{
 	//Run:   func(cmd *cobra.Command, args []string) {},
 }
 
+// Execute execute the root cmd
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
