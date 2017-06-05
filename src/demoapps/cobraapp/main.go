@@ -13,7 +13,7 @@
 
 package main
 
-import "cobra/cmd"
+import "cobraapp/cmd"
 
 func main() {
 	cmd.Execute()
