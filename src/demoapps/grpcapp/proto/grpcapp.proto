@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package grpcproto;
+
+service ItemService {
+  rpc GetItem(ItemRequest) returns (ItemResponse) {}
+  rpc GetItemStream(ItemRequest) returns (stream ItemResponse) {}
+  rpc PutItemStream(stream ItemRequest) returns (ItemSummary) {}
+  rpc StreamItem(stream ItemRequest) returns (stream ItemResponse) {}
+}
+
+message ItemRequest {
+  string ItemID = 1;
+}
+
+message ItemDetail {
+  string ItemID = 1;
+  string ItemName = 2;
+}
+
+message ItemResponse {
+  ItemDetail ItemDetail = 1;
+}
+
+message ItemSummary {
+  int32 Count = 1;
+}
+
+
+service OrderService {
+  rpc GetOrder(OrderRequest) returns (OrderResponse) {}
+}
+
+message OrderRequest {
+  string OrderID = 1;
+}
+
+message OrderResponse {
+  string OrderID = 1;
+}
