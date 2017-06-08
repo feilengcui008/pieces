@@ -1,21 +1,21 @@
 #ifndef _TAN_WORKER_POOL_H_
 #define _TAN_WORKER_POOL_H_
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
-#include <sys/types.h>
 #include <sys/syscall.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 /*
  * a simple task worker pool using thread
  * maybe some optimizations:
  * 1. add queue for each worker thread
- * 2. add running signal pipe for main thread, 
+ * 2. add running signal pipe for main thread,
  * so it can be used in multi-process programming
  * 3. add pre-allocated task object pool
- * 4. add thread struct for storing thread specific 
+ * 4. add thread struct for storing thread specific
  * data like thread id
  * 5. etc
  *
@@ -49,7 +49,7 @@ struct _pool {
   task *task_queue_head;
   // mutex for task queue
   pthread_mutex_t queue_mutex;
-  // cond for producer and consumer 
+  // cond for producer and consumer
   pthread_cond_t queue_cond;
   // mutex for running flag
   pthread_mutex_t running_mutex;

@@ -3,20 +3,20 @@
 
 #include <string>
 
-/* 
- * some utility functions for uuid, hash, 
+/*
+ * some utility functions for uuid, hash,
  * hmac, decode, encode, crypt etc
  *
  */
 
 namespace Tan {
 
-  // boost uuid
-  std::string uuid();
-  // bsd checksum
-  int bsdChecksum(const char *s);
-  std::string sha256(const void *data, size_t len);
-  std::string md5(const void *data, size_t len);
+// boost uuid
+std::string uuid();
+// bsd checksum
+int bsdChecksum(const char *s);
+std::string sha256(const void *data, size_t len);
+std::string md5(const void *data, size_t len);
 
 }  // end namespace Tan
 

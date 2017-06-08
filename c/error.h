@@ -1,8 +1,8 @@
 #ifndef _TAN_ERROR_H_
 #define _TAN_ERROR_H_
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "macros.h"
 

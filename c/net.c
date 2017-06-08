@@ -3,9 +3,8 @@
 
 BEGIN_EXTERN_C();
 
-int createSocket(int family, int type, int protocol, int nonblocking)
-{
-  int socketfd = socket(family, type, protocol);  
+int createSocket(int family, int type, int protocol, int nonblocking) {
+  int socketfd = socket(family, type, protocol);
   if (socketfd < 0) {
     error_exit("error create socket");
   }
@@ -15,23 +14,19 @@ int createSocket(int family, int type, int protocol, int nonblocking)
   return socketfd;
 }
 
-int connectAddress(const char *address, uint16_t port)
-{
-  return -1;
-}
+int connectAddress(const char *address, uint16_t port) { return -1; }
 
-int bindAndListenV4(const char *address, uint16_t port, int backlog)
-{
+int bindAndListenV4(const char *address, uint16_t port, int backlog) {
   struct sockaddr_in si;
   si.sin_family = AF_INET;
   si.sin_port = htons(port);
-  //si.sin_add
+  // si.sin_add
   return -1;
 }
 
-int bindAndListenByAddrinfo(const char *address, const char *port, int backlog) 
-{
-  //int ret = bind
+int bindAndListenByAddrinfo(const char *address, const char *port,
+                            int backlog) {
+  // int ret = bind
   struct addrinfo hints;
   struct addrinfo *result, *rp;
   int sfd, s;
@@ -60,11 +55,10 @@ int bindAndListenByAddrinfo(const char *address, const char *port, int backlog)
     if (sfd < 0) {
       continue;
     }
-    if (bind(sfd, rp->ai_addr, rp->ai_addrlen) == 0)
-      break;                  /* Success */
+    if (bind(sfd, rp->ai_addr, rp->ai_addrlen) == 0) break; /* Success */
     close(sfd);
   }
-  if (rp == NULL) {               /* No address succeeded */
+  if (rp == NULL) { /* No address succeeded */
     error_exit("Could not bind\n");
   }
   ret = bind(sfd, rp->ai_addr, socklen);
@@ -72,7 +66,7 @@ int bindAndListenByAddrinfo(const char *address, const char *port, int backlog)
     close(sfd);
     error_exit("error bind");
   }
-  freeaddrinfo(result);           /* No longer needed */
+  freeaddrinfo(result); /* No longer needed */
   ret = listen(sfd, backlog);
   if (ret < 0) {
     close(sfd);
@@ -81,8 +75,7 @@ int bindAndListenByAddrinfo(const char *address, const char *port, int backlog)
   return ret;
 }
 
-int setNonblock(int fd)
-{
+int setNonblock(int fd) {
   int ret = fcntl(fd, F_GETFL);
   if (ret < 0) {
     error_exit("get fd flag error\n");
@@ -94,9 +87,7 @@ int setNonblock(int fd)
   return ret;
 }
 
-
-int createEpoll(int size)
-{
+int createEpoll(int size) {
   int ret = epoll_create(size);
   if (ret < 0) {
     error_exit("create epoll error");
@@ -104,8 +95,7 @@ int createEpoll(int size)
   return ret;
 }
 
-int updateEvent(int epfd, int fd, int events, int op)
-{
+int updateEvent(int epfd, int fd, int events, int op) {
   struct epoll_event ee;
   ee.data.fd = fd;
   ee.events = events;
@@ -116,8 +106,8 @@ int updateEvent(int epfd, int fd, int events, int op)
   return ret;
 }
 
-int waitPoll(int epfd, struct epoll_event *events, int max_events, int timeout)
-{
+int waitPoll(int epfd, struct epoll_event *events, int max_events,
+             int timeout) {
   int ret = epoll_wait(epfd, events, max_events, timeout);
   if (ret < 0) {
     error_exit("epoll_wait error");

@@ -2,8 +2,7 @@
 
 // 0 : little endian
 // 1 : big endian
-int checkEndian()
-{
+int checkEndian() {
   union {
     int a;
     char b;

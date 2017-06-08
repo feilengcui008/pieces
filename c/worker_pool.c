@@ -1,8 +1,7 @@
 #include "worker_pool.h"
 
-// worker thread routine 
-static void *routine(void *args)
-{
+// worker thread routine
+static void *routine(void *args) {
   pool *p = (pool *)args;
   task *t;
   fprintf(stdout, "thread_id: %ld\n", syscall(SYS_gettid));
@@ -26,8 +25,7 @@ static void *routine(void *args)
 }
 
 // init pool and start threads
-void pool_init(pool *p, int thread_number, int max_queue_size)
-{
+void pool_init(pool *p, int thread_number, int max_queue_size) {
   p->thread_number = thread_number;
   p->max_queue_size = max_queue_size;
   p->task_queue_size = 0;
@@ -50,17 +48,14 @@ void pool_init(pool *p, int thread_number, int max_queue_size)
   p->running = 1;
 }
 
-void pool_stop(pool *p)
-{
+void pool_stop(pool *p) {
   pthread_mutex_lock(&p->running_mutex);
   p->running = 0;
   pthread_mutex_unlock(&p->running_mutex);
 }
 
-void pool_destroy(pool *p) 
-{
-  if (!p->running)
-    return;
+void pool_destroy(pool *p) {
+  if (!p->running) return;
   p->running = 0;
   // tell all threads we are exiting
   // pthread_cond_broadcast(&p->queue_cond);
@@ -71,7 +66,7 @@ void pool_destroy(pool *p)
   free(p->pt);
   // free tasks
   task *temp;
-  while ((temp=p->task_queue_head) != NULL) {
+  while ((temp = p->task_queue_head) != NULL) {
     p->task_queue_head = p->task_queue_head->next;
     free(temp);
   }
@@ -83,10 +78,9 @@ void pool_destroy(pool *p)
   p = NULL;
 }
 
-static int _pool_add_task(pool *p, task *t)
-{
+static int _pool_add_task(pool *p, task *t) {
   pthread_mutex_lock(&p->queue_mutex);
-  if(p->task_queue_size >= p->max_queue_size) {
+  if (p->task_queue_size >= p->max_queue_size) {
     pthread_mutex_unlock(&p->queue_mutex);
     fprintf(stderr, "exceeded task queue size\n");
     return 0;
@@ -106,8 +100,7 @@ static int _pool_add_task(pool *p, task *t)
   return 0;
 }
 
-int pool_add_task(pool *p, callback cb, void *data)
-{
+int pool_add_task(pool *p, callback cb, void *data) {
   int ret = 0;
   task *t = (task *)malloc(sizeof(task));
   t->cb = cb;

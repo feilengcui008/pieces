@@ -14,8 +14,8 @@
 
 // dynamic library api export
 #if defined(__GNU__) && __GNUC__ >= 4
-#define EXPORT_API __attribute__ ((visibility("default")))
-#define EXPORT_DLEXPORT __attribute__ ((visibility("default")))
+#define EXPORT_API __attribute__((visibility("default")))
+#define EXPORT_DLEXPORT __attribute__((visibility("default")))
 #else
 #define EXPORT_API
 #define EXPORT_DLEXPORT
@@ -24,6 +24,7 @@
 // alignment
 #define MM_ALIGNMENT 8
 #define MM_ALIGNMENT_MASK ~(MM_ALIGNMENT - 1)
-#define MM_ALIGNMENT_SIZE(size) (((size) + MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
+#define MM_ALIGNMENT_SIZE(size) \
+  (((size) + MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
 
 #endif  // end _TAN_MACROS_H_
