@@ -1,2 +1,1 @@
-# go-pieces
-some go code pieces
+some code pieces
