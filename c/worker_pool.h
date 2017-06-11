@@ -27,36 +27,36 @@ typedef void *(*callback)(void *args);
 // task queue
 typedef struct _task task;
 struct _task {
-  callback cb;
-  void *args;
-  struct _task *next;
+    callback cb;
+    void *args;
+    struct _task *next;
 };
 
 /* thread pool */
 typedef struct _pool pool;
 struct _pool {
-  // thread number
-  int thread_number;
-  // current task size of queue
-  int task_queue_size;
-  // max queue size allowed
-  int max_queue_size;
-  // stop flag
-  int running;
-  // pt array
-  pthread_t *pt;
-  // task queue
-  task *task_queue_head;
-  // mutex for task queue
-  pthread_mutex_t queue_mutex;
-  // cond for producer and consumer
-  pthread_cond_t queue_cond;
-  // mutex for running flag
-  pthread_mutex_t running_mutex;
-  // for initilize worker threads
-  pthread_barrier_t countdown_latch;
-  // worker thread sleep interval
-  int interval;
+    // thread number
+    int thread_number;
+    // current task size of queue
+    int task_queue_size;
+    // max queue size allowed
+    int max_queue_size;
+    // stop flag
+    int running;
+    // pt array
+    pthread_t *pt;
+    // task queue
+    task *task_queue_head;
+    // mutex for task queue
+    pthread_mutex_t queue_mutex;
+    // cond for producer and consumer
+    pthread_cond_t queue_cond;
+    // mutex for running flag
+    pthread_mutex_t running_mutex;
+    // for initilize worker threads
+    pthread_barrier_t countdown_latch;
+    // worker thread sleep interval
+    int interval;
 };
 
 // init pool and start threads

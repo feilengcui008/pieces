@@ -24,7 +24,6 @@
 // alignment
 #define MM_ALIGNMENT 8
 #define MM_ALIGNMENT_MASK ~(MM_ALIGNMENT - 1)
-#define MM_ALIGNMENT_SIZE(size) \
-  (((size) + MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
+#define MM_ALIGNMENT_SIZE(size) (((size)+MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
 
 #endif  // end _TAN_MACROS_H_

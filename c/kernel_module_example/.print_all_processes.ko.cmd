@@ -1,1 +1,0 @@
-cmd_/home/tan/me/mycode/c/kernel_modules/print_all_processes.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-3.13.0-87-generic/scripts/module-common.lds --build-id  -o /home/tan/me/mycode/c/kernel_modules/print_all_processes.ko /home/tan/me/mycode/c/kernel_modules/print_all_processes.o /home/tan/me/mycode/c/kernel_modules/print_all_processes.mod.o
