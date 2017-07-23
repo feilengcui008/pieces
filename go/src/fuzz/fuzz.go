@@ -43,31 +43,35 @@ func isSupportedKind(k reflect.Kind) bool {
 	return true
 }
 
-func Fuzz(v reflect.Value, tag string) {
+func Fuzz(i interface{}) {
+	v := reflect.ValueOf(i).Elem()
+	fuzz(v, "")
+}
+
+func fuzz(v reflect.Value, tag string) {
 	// check valid first
 	if !v.IsValid() {
-		log.Printf("Not valid")
 		return
 	}
 
+	// handle ptr
 	if v.Kind() == reflect.Ptr {
 		if v.IsNil() {
 			if v.CanSet() {
 				e := v.Type().Elem()
 				v.Set(reflect.New(e))
-				v = v.Elem()
 			} else {
-				// TODO
 				// since v is nil value, v.Elem() will be zero value
-				// and zero value is not addressable or settable, how
-				// can we create new data for underlining data?
-				log.Printf("v is nil value and v.Elem() is zero value which is not settable and addressable\n")
-				return
+				// and zero value is not addressable or settable, we
+				// need allocate a new settable v at the same address
+				v = reflect.NewAt(v.Type(), unsafe.Pointer(v.UnsafeAddr())).Elem()
+				newv := reflect.New(v.Type().Elem())
+				v.Set(newv)
 			}
-		} else {
-			v = v.Elem()
 		}
+		v = v.Elem()
 	}
+
 	// from here v should not be ptr
 	if isSupportedKind(v.Kind()) && v.Kind() != reflect.Ptr && !v.CanSet() {
 		v = reflect.NewAt(v.Type(), unsafe.Pointer(v.UnsafeAddr())).Elem()
@@ -130,7 +134,7 @@ func Fuzz(v reflect.Value, tag string) {
 			} else {
 				newv = reflect.New(etp).Elem()
 			}
-			Fuzz(newv, "")
+			fuzz(newv, "")
 			sl = reflect.Append(sl, newv)
 		}
 		v.Set(sl)
@@ -146,8 +150,8 @@ func Fuzz(v reflect.Value, tag string) {
 		m := reflect.MakeMap(tp)
 		for i := 0; i < n; i++ {
 			newk, newv := reflect.New(tp.Key()), reflect.New(tp.Elem())
-			Fuzz(newk, "")
-			Fuzz(newv, "")
+			fuzz(newk, "")
+			fuzz(newv, "")
 			m.SetMapIndex(newk.Elem(), newv.Elem())
 		}
 		v.Set(m)
@@ -155,8 +159,7 @@ func Fuzz(v reflect.Value, tag string) {
 	case reflect.Struct:
 		for i := 0; i < v.NumField(); i++ {
 			tag := v.Type().Field(i).Tag
-			log.Printf("Fuzz %s\n", v.Type().Field(i).Name)
-			Fuzz(v.Field(i), tag.Get("fuzz"))
+			fuzz(v.Field(i), tag.Get("fuzz"))
 		}
 	default:
 		log.Printf("Do not support type %v, %#v\n", v.Kind(), v)
