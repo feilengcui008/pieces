@@ -1,4 +1,9 @@
 #include "net.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
 #include <sys/epoll.h>
 
 BEGIN_EXTERN_C();
@@ -16,13 +21,7 @@ int createSocket(int family, int type, int protocol, int nonblocking) {
 
 int connectAddress(const char *address, uint16_t port) { return -1; }
 
-int bindAndListenV4(const char *address, uint16_t port, int backlog) {
-    struct sockaddr_in si;
-    si.sin_family = AF_INET;
-    si.sin_port = htons(port);
-    // si.sin_add
-    return -1;
-}
+int bindAndListenV4(const char *address, uint16_t port, int backlog) { return -1; }
 
 int bindAndListenByAddrinfo(const char *address, const char *port,
                             int backlog) {
@@ -30,7 +29,6 @@ int bindAndListenByAddrinfo(const char *address, const char *port,
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int sfd, s;
-    socklen_t socklen;
     int ret;
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -61,7 +59,7 @@ int bindAndListenByAddrinfo(const char *address, const char *port,
     if (rp == NULL) { /* No address succeeded */
         error_exit("Could not bind\n");
     }
-    ret = bind(sfd, rp->ai_addr, socklen);
+    ret = bind(sfd, rp->ai_addr, sizeof(struct sockaddr_in));
     if (ret < 0) {
         close(sfd);
         error_exit("error bind");

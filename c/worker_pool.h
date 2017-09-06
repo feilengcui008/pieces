@@ -1,5 +1,5 @@
-#ifndef _TAN_WORKER_POOL_H_
-#define _TAN_WORKER_POOL_H_
+#ifndef WORKER_POOL_H_
+#define WORKER_POOL_H_
 
 #include <pthread.h>
 #include <stdio.h>
@@ -8,20 +8,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-/*
- * a simple task worker pool using thread
- * maybe some optimizations:
- * 1. add queue for each worker thread
- * 2. add running signal pipe for main thread,
- * so it can be used in multi-process programming
- * 3. add pre-allocated task object pool
- * 4. add thread struct for storing thread specific
- * data like thread id
- * 5. etc
- *
- */
+#include "macros.h"
 
-/* task related */
+BEGIN_EXTERN_C()
+
 // callback type
 typedef void *(*callback)(void *args);
 // task queue
@@ -68,4 +58,6 @@ void pool_destroy(pool *p);
 // add task into pool
 int pool_add_task(pool *p, callback cb, void *data);
 
-#endif  // end _TAN_WORKER_POOL_H_
+END_EXTERN_C()
+
+#endif  // end WORKER_POOL_H_

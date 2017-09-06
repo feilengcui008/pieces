@@ -1,10 +1,13 @@
 #include "worker_pool.h"
+#include "macros.h"
+
+BEGIN_EXTERN_C()
 
 // worker thread routine
 static void *routine(void *args) {
     pool *p = (pool *)args;
     task *t;
-    fprintf(stdout, "thread_id: %ld\n", syscall(SYS_gettid));
+    //fprintf(stdout, "thread_id: %ld\n", syscall(SYS_gettid));
     pthread_barrier_wait(&p->countdown_latch);
     while (p->running) {
         pthread_mutex_lock(&p->queue_mutex);
@@ -111,3 +114,5 @@ int pool_add_task(pool *p, callback cb, void *data) {
     }
     return ret;
 }
+
+END_EXTERN_C()

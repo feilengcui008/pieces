@@ -1,5 +1,5 @@
-#ifndef _TAN_MACROS_H_
-#define _TAN_MACROS_H_
+#ifndef MACROS_H_
+#define MACROS_H_
 
 /* some common useful macros */
 
@@ -22,8 +22,8 @@
 #endif
 
 // alignment
-#define MM_ALIGNMENT 8
-#define MM_ALIGNMENT_MASK ~(MM_ALIGNMENT - 1)
-#define MM_ALIGNMENT_SIZE(size) (((size)+MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
+//#define MM_ALIGNMENT 8
+//#define MM_ALIGNMENT_MASK ~(MM_ALIGNMENT - 1)
+//#define MM_ALIGNMENT_SIZE(size) (((size)+MM_ALIGNMENT - 1) & MM_ALIGNMENT_MASK)
 
-#endif  // end _TAN_MACROS_H_
+#endif  // end MACROS_H_

@@ -1,16 +1,9 @@
-#ifndef _TAN_NET_H_
-#define _TAN_NET_H_
+#ifndef NET_H_
+#define NET_H_
 
-#include <fcntl.h>
 #include <inttypes.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <sys/epoll.h>
 
 #include "error.h"
 #include "macros.h"
@@ -31,4 +24,4 @@ int waitPoll(int epfd, struct epoll_event *events, int max_events, int timeout);
 
 END_EXTERN_C()
 
-#endif  // end _TAN_NET_H_
+#endif  // end NET_H_
