@@ -1,10 +1,18 @@
-#include "signature.h"
+#ifndef TAN_SIGNATURE_H_
+#define TAN_SIGNATURE_H_
+
 #include <openssl/md5.h>
 #include <openssl/sha.h>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <string>
+
+/*
+ * some utility functions for uuid, hash,
+ * hmac, decode, encode, crypt etc
+ *
+ */
 
 namespace Tan {
 
@@ -67,4 +75,7 @@ std::string md5(const void *data, int len) {
     }
     return res;
 }
-}
+
+}  // end namespace Tan
+
+#endif  // end TAN_SIGNATURE_H_
