@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "tan";
+option java_outer_classname = "DictionaryProto";
+option objc_class_prefix = "DP";
+
+package Tan;
+
+// Interface exported by the server.
+service Dictionary {
+
+  rpc GetOne(Word) returns (Meaning) {}
+
+  rpc SendStreamList(Word) returns (stream Meaning) {}
+
+  rpc GetStreamList(stream Word) returns (Meaning) {}
+
+  rpc StreamList(stream Word) returns (stream Meaning) {}
+}
+
+message Word {
+  string data = 1;
+}
+
+message Meaning {
+  string data = 1;
+}
+
