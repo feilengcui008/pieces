@@ -1,5 +1,5 @@
-#ifndef TAN_SIGNATURE_H_
-#define TAN_SIGNATURE_H_
+#ifndef TAN_SIGNATURE_H
+#define TAN_SIGNATURE_H
 
 #include <openssl/md5.h>
 #include <openssl/sha.h>
@@ -22,9 +22,6 @@ std::string uuid() {
     return boost::uuids::to_string(id);
 }
 
-// bsd checksum
-// 16位，按字节做一次加法以及一次循环右移位
-// 避免溢出
 int bsdChecksum(const char *s) {
     int ret = 0;
     while (*s) {
@@ -34,17 +31,6 @@ int bsdChecksum(const char *s) {
     }
     return ret;
 }
-
-// TODO: CRC
-// 基本原理: 多项式模2同余除法
-// 比如二进制串: A1A2A3...An
-//               B1B2B3...Bn
-
-// TODO: pearson hashing
-
-// TODO: Jenkins hash
-
-// TODO: Murmurhash
 
 std::string sha256(const void *data, size_t len) {
     char buf[2];
@@ -78,4 +64,4 @@ std::string md5(const void *data, int len) {
 
 }  // end namespace Tan
 
-#endif  // end TAN_SIGNATURE_H_
+#endif  // end TAN_SIGNATURE_H
