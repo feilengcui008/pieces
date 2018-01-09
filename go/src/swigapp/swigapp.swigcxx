@@ -1,0 +1,5 @@
+%module swigapp
+
+%inline %{
+    extern void CallSimpleFunc();
+%}
