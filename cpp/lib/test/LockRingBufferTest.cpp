@@ -1,11 +1,11 @@
-#include "lock_ring_buffer.h"
+#include "LockRingBuffer.h"
 
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <thread>
 
 int main(int argc, char *argv[]) {
-    Tan::LockRingBuffer<int, 5> rb;
+    LockRingBuffer<int, 5> rb;
 
     auto producer = [&rb]() {
         rb.put(new int(syscall(SYS_gettid)));

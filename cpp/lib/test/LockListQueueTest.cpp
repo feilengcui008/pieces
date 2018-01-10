@@ -1,4 +1,4 @@
-#include "lock_list_queue.h"
+#include "LockListQueue.h"
 
 #include <stdio.h>
 #include <sys/syscall.h>
@@ -7,12 +7,12 @@
 #include <thread>
 
 int main(int argc, char *argv[]) {
-    Tan::LockListQueue<int> lq;
+    LockListQueue<int> lq;
 
     auto producer = [&lq]() {
         auto begin = time(NULL);
         while (time(NULL) < begin + 3) {
-            lq.put(new Tan::Node<int>(new int(syscall(SYS_gettid))));
+            lq.put(new Node<int>(new int(syscall(SYS_gettid))));
         }
     };
 

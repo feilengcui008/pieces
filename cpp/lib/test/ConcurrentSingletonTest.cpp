@@ -1,13 +1,13 @@
+#include "ConcurrentSingleton.h"
 #include <stdio.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <array>
 #include <thread>
-#include "concurrent_singleton.h"
 
 int main(int argc, char *argv[]) {
     auto func = []() {
-        auto s = Tan::ConcurrentSingleton<int>::instance();
+        auto s = ConcurrentSingleton<int>::instance();
         fprintf(stdout, "%ld, %p\n", syscall(SYS_gettid), &s);
     };
 

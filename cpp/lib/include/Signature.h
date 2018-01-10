@@ -14,8 +14,6 @@
  *
  */
 
-namespace Tan {
-
 std::string uuid() {
     boost::uuids::random_generator gen;
     boost::uuids::uuid id = gen();
@@ -61,7 +59,5 @@ std::string md5(const void *data, int len) {
     }
     return res;
 }
-
-}  // end namespace Tan
 
 #endif  // end TAN_SIGNATURE_H

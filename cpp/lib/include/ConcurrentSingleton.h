@@ -4,8 +4,6 @@
 #include <memory>
 #include <mutex>
 
-namespace Tan {
-
 template <class T>
 class ConcurrentSingleton {
    public:
@@ -38,7 +36,5 @@ std::mutex ConcurrentSingleton<T>::mux_;
 
 template <class T>
 std::shared_ptr<T> ConcurrentSingleton<T>::data_;
-
-}  // end namespace Tan
 
 #endif  // end CONCURRENT_SINGLETON_H

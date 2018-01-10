@@ -5,8 +5,6 @@
 #include <memory>
 #include <mutex>
 
-namespace Tan {
-
 template <class T>
 class Node {
    public:
@@ -53,7 +51,5 @@ class LockListQueue {
     Node<T> *head_, *tail_;
     std::mutex mux_;
 };
-
-}  // namespace Tan
 
 #endif  // end LOCK_LIST_QUEUE_H

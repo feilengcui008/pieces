@@ -7,8 +7,6 @@
 #include <iostream>
 #include <mutex>
 
-namespace Tan {
-
 template <class T, uint64_t size>
 class LockRingBuffer {
    public:
@@ -89,7 +87,5 @@ void LockRingBuffer<T, size>::put(T *ele) {
     data_[head_++ & mask_] = ele;
     empty_.notify_one();
 }
-
-}  // namespace Tan
 
 #endif  // LOCK_RING_BUFFER_H
